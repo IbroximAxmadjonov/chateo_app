@@ -1,0 +1,93 @@
+name: chateo_app
+description: "A new Flutter project."
+publish_to: 'none' # Remove this line if you wish to publish to pub.dev
+version: 1.0.0+1
+environment:
+  sdk: ^3.10.0
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+  # ========== UI ==========
+  cupertino_icons: ^1.0.8
+  flutter_screenutil: ^5.9.3
+  flutter_svg: ^2.2.1
+  mask_text_input_formatter: ^2.9.0
+
+  # ========== Navigation ==========
+  go_router: ^16.2.5
+
+  # ========== State Management ==========
+  bloc: ^9.1.0
+  flutter_bloc: ^9.1.1
+  hydrated_bloc: ^11.0.0
+  provider: ^6.1.5+1
+  equatable: ^2.0.8
+  dartz: ^0.10.1
+
+  # ========== Localization ==========
+  flutter_localizations:
+    sdk: flutter
+  intl: ^0.20.2
+  easy_localization: ^3.0.8
+
+  # ========== Dependencies Injection ==========
+  get_it: ^9.2.1
+
+  # ========== Device/Platform ==========
+  path_provider: ^2.1.3
+  image_picker: ^1.1.2
+
+  # ========== Network ==========
+  dio: ^5.7.0
+  talker_dio_logger: ^4.4.1
+  connectivity_plus: ^7.0.0
+  dart_jsonwebtoken: ^3.4.1
+  cloud_firestore: ^6.1.3
+  google_sign_in: ^6.2.1
+
+  # ========== Storage ==========
+  shared_preferences: ^2.5.5
+  flutter_secure_storage: ^9.2.4
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+  flutter_native_splash: ^2.4.4
+
+# ============ Splash screen ==========
+flutter_native_splash:
+  color: "#FFFFFF"
+  image: assets/images/chateo_logo_light.png
+  color_dark: "#001A83"
+  image_dark: assets/images/chateo_logo_dark.png
+
+  android: true
+  ios: true
+  fullscreen: true
+
+# ============ Assets & Fonts ==========
+flutter:
+  uses-material-design: true
+  generate: true
+
+  assets:
+    - assets/images/
+    - assets/icons/
+    - assets/translations/
+  fonts:
+    - family: Mulish
+      fonts:
+        - asset: assets/fonts/Mulish-Regular.ttf
+          weight: 400
+        - asset: assets/fonts/Mulish-SemiBold.ttf
+          weight: 600
+        - asset: assets/fonts/Mulish-Bold.ttf
+          weight: 700
+
+flutter_assets_generator:
+  path_ignore:
+    - "assets/fonts"
+    - "assets/translations"

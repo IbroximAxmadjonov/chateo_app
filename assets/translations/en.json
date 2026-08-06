@@ -1,0 +1,56 @@
+{
+  "onBoarding": {
+    "connect": "Connect easily with your family and friends over countries",
+    "termsAndPrivacy": "Terms & Privacy Policy",
+    "startMessaging": "Start Messaging"
+  },
+  "auth": {
+    "enterPhoneNumber": "Enter Your Phone Number",
+    "confirmCountryCode": "Please confirm your country code and enter your phone number",
+    "phoneNumberHint": "Phone Number",
+    "continueText": "Continue",
+    "verify_otp": {
+      "enter_code": "Enter Code",
+      "sent_sms": "We have sent you an SMS with the code\nto {phone}",
+      "invalid_code": "Invalid code",
+      "code_resent": "Code resent",
+      "resend_code": "Resend Code"
+    }
+  },
+  "chats": {
+    "title": "Chats",
+    "failed_to_load": "Failed to load chats",
+    "online": "Online",
+    "lastSeenJustNow": "Last seen just now",
+    "lastSeenMinutes": "Last seen {} minutes ago",
+    "lastSeenHours": "Last seen {} hours ago",
+    "lastSeenYesterday": "Last seen yesterday"
+  },
+  "contacts": {
+    "title": "Contacts",
+    "failed_to_load": "Failed to load contacts"
+  },
+  "more": {
+    "title": "More",
+    "account": "Account",
+    "settingChats": "Chats",
+    "appearance": "Appearance",
+    "notification": "Notification",
+    "privacy": "Privacy",
+    "dataUsage": "Data Usage",
+    "help": "Help",
+    "inviteYourFriends": "Invite Your Friends",
+    "profileAccount": "Profile",
+    "profileElement": {
+      "firstName": "First Name (Required)",
+      "lastName": "Last Name (Optional)"
+    }
+  },
+  "save": "Save",
+  "search": {
+    "title": "Search",
+    "no_results": "No results for {query}",
+    "no_contacts": "No contacts",
+    "no_chats": "No chats"
+  }
+}

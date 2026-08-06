@@ -1,0 +1,56 @@
+{
+  "onBoarding": {
+    "connect": "Легко поддерживайте связь с семьей и друзьями в разных странах",
+    "termsAndPrivacy": "Условия использования и политика конфиденциальности",
+    "startMessaging": "Начать обмен сообщениями"
+  },
+  "auth": {
+    "enterPhoneNumber": "Введите ваш номер телефона",
+    "confirmCountryCode": "Пожалуйста, подтвердите код страны и введите свой номер телефона",
+    "phoneNumberHint": "Номер телефона",
+    "continueText": "Продолжить",
+    "verify_otp": {
+      "enter_code": "Введите код",
+      "sent_sms": "Мы отправили вам SMS с кодом\nна {phone}",
+      "invalid_code": "Неверный код",
+      "code_resent": "Код отправлен повторно",
+      "resend_code": "Отправить код ещё раз"
+    }
+  },
+  "chats": {
+    "title": "Чаты",
+    "failed_to_load": "Не удалось загрузить чаты",
+    "online": "В сети",
+    "lastSeenJustNow": "Был(а) в сети только что",
+    "lastSeenMinutes": "Был(а) в сети {} мин. назад",
+    "lastSeenHours": "Был(а) в сети {} ч. назад",
+    "lastSeenYesterday": "Был(а) в сети вчера"
+  },
+  "contacts": {
+    "title": "Контакты",
+    "failed_to_load": "Не удалось загрузить контакты"
+  },
+  "more": {
+    "title": "Еще",
+    "account": "Аккаунт",
+    "settingChats": "Чаты",
+    "appearance": "Внешний вид",
+    "notification": "Уведомления",
+    "privacy": "Конфиденциальность",
+    "dataUsage": "Использование данных",
+    "help": "Помощь",
+    "inviteYourFriends": "Пригласить друзей",
+    "profileAccount": "Профиль",
+    "profileElement": {
+      "firstName": "Имя (обязательно)",
+      "lastName": "Фамилия (необязательно)"
+    }
+  },
+  "save": "Сохранить",
+  "search": {
+    "title": "Поиск",
+    "no_results": "Нет результатов для {query}",
+    "no_contacts": "Нет контактов",
+    "no_chats": "Нет чатов"
+  }
+}

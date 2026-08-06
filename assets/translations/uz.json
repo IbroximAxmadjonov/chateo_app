@@ -1,0 +1,56 @@
+{
+  "onBoarding": {
+    "connect": "Mamlakatlar bo'ylab oilangiz va do'stlaringiz bilan osongina bog'laning",
+    "termsAndPrivacy": "Shartlar va Maxfiylik siyosati",
+    "startMessaging": "Xabarlarni boshlash"
+  },
+  "auth": {
+    "enterPhoneNumber": "Telefon raqamingizni kiriting",
+    "confirmCountryCode": "Iltimos, mamlakat kodini tasdiqlang va telefon raqamingizni kiriting",
+    "phoneNumberHint": "Telefon raqami",
+    "continueText": "Davom etish",
+    "verify_otp": {
+      "enter_code": "Kod kiriting",
+      "sent_sms": "Sizga SMS orqali kod yuborildi\n{phone} raqamiga",
+      "invalid_code": "Kod noto‘g‘ri",
+      "code_resent": "Kod qayta yuborildi",
+      "resend_code": "Kod qayta yuborish"
+    }
+  },
+  "chats": {
+    "title": "Chatlar",
+    "failed_to_load": "Chatlarni yuklab bo‘lmadi",
+    "online": "Tarmoqda",
+    "lastSeenJustNow": "Hozirgina tarmoqda edi",
+    "lastSeenMinutes": "{} daqiqa oldin tarmoqda edi",
+    "lastSeenHours": "{} soat oldin tarmoqda edi",
+    "lastSeenYesterday": "Kecha tarmoqda edi"
+  },
+  "contacts": {
+    "title": "Kontaktlar",
+    "failed_to_load": "Kontaktlarni yuklab bo‘lmadi"
+  },
+  "more": {
+    "title": "Ko'proq",
+    "account": "Hisob",
+    "settingChats": "Chatlar",
+    "appearance": "Ko'rinish",
+    "notification": "Bildirishnoma",
+    "privacy": "Maxfiylik",
+    "dataUsage": "Ma'lumot sarfi",
+    "help": "Yordam",
+    "inviteYourFriends": "Do'stlarni taklif qilish",
+    "profileAccount": "Profil",
+    "profileElement": {
+      "firstName": "Ism (majburiy)",
+      "lastName": "Familiya (ixtiyoriy)"
+    }
+  },
+  "save": "Saqlash",
+  "search": {
+    "title": "Qidiruv",
+    "no_results": "{query} bo‘yicha natija topilmadi",
+    "no_contacts": "Kontaktlar yo‘q",
+    "no_chats": "Chatlar yo‘q"
+  }
+}
