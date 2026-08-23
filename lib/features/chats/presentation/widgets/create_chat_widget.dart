@@ -1,4 +1,4 @@
-import 'package:chateo_app/core/domain/routing/routes.dart';
+import 'package:chateo_app/core/domain/routing/app_routes_path.dart';
 import 'package:chateo_app/core/presentation/widgets/app_icon.dart';
 import 'package:chateo_app/core/presentation/widgets/app_search_bar.dart';
 import 'package:chateo_app/core/presentation/widgets/cell.dart';
@@ -53,7 +53,7 @@ class _CreateChatWidgetState extends State<CreateChatWidget> {
 
     // 3. Переходим на страницу диалога
     context.push(
-      AppRoutes.dialog,
+      AppRoutesPath.dialog,
       extra: {
         'chatId': contact.contactUserId,
         'chatName': contact.fullName,

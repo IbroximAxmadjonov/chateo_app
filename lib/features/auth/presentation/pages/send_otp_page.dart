@@ -1,5 +1,5 @@
 import 'package:chateo_app/core/data/network/form_status.dart';
-import 'package:chateo_app/core/domain/routing/routes.dart';
+import 'package:chateo_app/core/domain/routing/app_routes_path.dart';
 import 'package:chateo_app/core/presentation/widgets/app_icon.dart';
 import 'package:chateo_app/core/presentation/widgets/app_input_phone_number.dart';
 import 'package:chateo_app/core/utils/theme_extension.dart';
@@ -63,7 +63,7 @@ class _SendOtpPageState extends State<SendOtpPage> {
           );
           // Navigate only after successful response, passing phoneNumber
           context.push(
-            AppRoutes.verifyOtp,
+            AppRoutesPath.verifyOtp,
             extra: {
               'phoneNumber': state.phone,
               'maskPhoneNumber': '+998 ${_controller.text}',

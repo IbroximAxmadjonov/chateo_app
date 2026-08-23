@@ -1,5 +1,5 @@
 import 'package:chateo_app/core/data/network/form_status.dart';
-import 'package:chateo_app/core/domain/routing/routes.dart';
+import 'package:chateo_app/core/domain/routing/app_routes_path.dart';
 import 'package:chateo_app/core/presentation/widgets/app_icon.dart';
 import 'package:chateo_app/core/utils/theme_extension.dart';
 import 'package:chateo_app/core/utils/themes/app_colors.dart';
@@ -79,9 +79,9 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
           } else if (state.status == FormStatus.authenticated) {
             // Токены сохранены в AuthBloc — навигация на нужный экран
             if (state.isNewUser) {
-              context.push(AppRoutes.profile, extra: {'isNewUser': true});
+              context.push(AppRoutesPath.profile, extra: {'isNewUser': true});
             } else {
-              context.go(AppRoutes.chats);
+              context.go(AppRoutesPath.chats);
             }
           }
         }

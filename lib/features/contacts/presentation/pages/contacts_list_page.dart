@@ -11,7 +11,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
 
-import '../../../../core/domain/routing/routes.dart';
+import '../../../../core/domain/routing/app_routes_path.dart';
 
 import '../../../chats/presentation/manager/chats_bloc.dart';
 import '../manager/contacts_bloc.dart';
@@ -71,6 +71,8 @@ class _ContactsListPageState extends State<ContactsListPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Registers this widget as a dependent of EasyLocalization so it rebuilds on locale change.
+    EasyLocalization.of(context);
     return BlocListener<ContactsBloc, ContactsState>(
       listener: (context, state) {
         if (state is ContactsError) {
@@ -143,7 +145,7 @@ class _ContactsListPageState extends State<ContactsListPage> {
                         itemBuilder: (context, index) {
                           final c = contacts[index];
                           final statusText = c.isOnline
-                              ? LocaleKeys.chats_online
+                              ? LocaleKeys.chats_online.tr()
                               : _formatLastSeen(context, c.lastSeenAt);
                           return InkWell(
                             onTap: () {
@@ -162,7 +164,7 @@ class _ContactsListPageState extends State<ContactsListPage> {
                               } catch (_) {}
 
                               context.push(
-                                AppRoutes.dialog,
+                                AppRoutesPath.dialog,
                                 extra: {
                                   'chatId': resolvedChatId,
                                   'chatName': c.fullName,

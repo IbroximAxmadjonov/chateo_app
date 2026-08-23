@@ -1,8 +1,8 @@
 import 'dart:async' show Completer;
 import 'dart:io';
 
-import 'package:chateo_app/core/domain/routing/router.dart';
-import 'package:chateo_app/core/domain/routing/routes.dart';
+import 'package:chateo_app/core/domain/routing/app_router.dart';
+import 'package:chateo_app/core/domain/routing/app_routes_path.dart';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -11,12 +11,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import '../../storage/auth_storage.dart';
 
-class Auth2Interceptor implements Interceptor {
+class AuthInterceptor implements Interceptor {
   final AuthStorage _authStorage;
   final Dio _dio;
   Completer<bool>? _refreshCompleter;
 
-  Auth2Interceptor({required AuthStorage authStorage, required Dio dio})
+  AuthInterceptor({required AuthStorage authStorage, required Dio dio})
     : _authStorage = authStorage,
       _dio = dio;
 
@@ -106,7 +106,7 @@ class Auth2Interceptor implements Interceptor {
   void _handleLogout() {
     _authStorage.deleteTokens();
     debugPrint('🔒 Session expired — redirecting to login');
-    router.go(AppRoutes.sentOtp);
+    router.go(AppRoutesPath.sentOtp);
   }
 
   bool _isPublicAuthEndpoint(String path) {

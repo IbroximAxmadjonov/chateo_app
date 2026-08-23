@@ -18,8 +18,8 @@ Future<void> initCoreInjection(GetIt sl) async {
   sl.registerLazySingleton<DioNetworkManager>(
     () => DioNetworkManager(dio: sl(), auth2interceptor: sl()),
   );
-  sl.registerLazySingleton<Auth2Interceptor>(
-    () => Auth2Interceptor(authStorage: sl(), dio: sl()),
+  sl.registerLazySingleton<AuthInterceptor>(
+    () => AuthInterceptor(authStorage: sl(), dio: sl()),
   );
 
   /// Storage — auth

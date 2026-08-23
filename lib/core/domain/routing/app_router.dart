@@ -1,3 +1,4 @@
+import 'package:chateo_app/core/domain/routing/app_routes_name.dart';
 import 'package:chateo_app/features/auth/presentation/pages/send_otp_page.dart';
 import 'package:chateo_app/features/dialog/presentation/manager/dialog_bloc.dart';
 import 'package:chateo_app/features/dialog/presentation/pages/dialog_page.dart';
@@ -8,7 +9,7 @@ import 'package:chateo_app/features/contacts/presentation/pages/contacts_list_pa
 import 'package:chateo_app/features/more/presentation/pages/more_list_page.dart';
 import 'package:chateo_app/features/settings/account/presentation/pages/account_page.dart';
 import 'package:chateo_app/features/settings/appereance/presentation/pages/appereance_page.dart';
-import 'package:chateo_app/features/settings/data_usage/presentation/pages/data_usage_page.dart' show DataUsagePage;
+import 'package:chateo_app/features/settings/data_usage/presentation/pages/data_usage_page.dart';
 import 'package:chateo_app/features/settings/help/presentation/pages/help_page.dart';
 import 'package:chateo_app/features/settings/invite_your_friends/presentation/pages/invite_your_friends_page.dart';
 import 'package:chateo_app/features/settings/notification/presentation/pages/notification_page.dart';
@@ -21,27 +22,33 @@ import 'package:chateo_app/service_locator.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
 
-
 import 'navigation_page.dart';
-import 'routes.dart';
+import 'app_routes_path.dart';
 
 final GoRouter router = GoRouter(
-  initialLocation: AppRoutes.splash,
+  initialLocation: AppRoutesPath.splash,
   routes: [
     /// Splash
-    GoRoute(path: AppRoutes.splash, builder: (context, state) => const SplashPage()),
+    GoRoute(
+      name: AppRoutesName.splash,
+      path: AppRoutesPath.splash,
+      builder: (context, state) => const SplashPage(),
+    ),
 
     /// Auth
     GoRoute(
-      path: AppRoutes.walkThrough,
+      name: AppRoutesName.walkThrough,
+      path: AppRoutesPath.walkThrough,
       builder: (context, state) => const WalkThrough(),
     ),
     GoRoute(
-      path: AppRoutes.sentOtp,
+      name: AppRoutesName.sentOtp,
+      path: AppRoutesPath.sentOtp,
       builder: (context, state) => const SendOtpPage(),
     ),
     GoRoute(
-      path: AppRoutes.verifyOtp,
+      name: AppRoutesName.verifyOtp,
+      path: AppRoutesPath.verifyOtp,
       builder: (context, state) {
         final data = state.extra as Map<String, dynamic>;
         final phoneNumber = data['phoneNumber'] as String;
@@ -62,7 +69,8 @@ final GoRouter router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: AppRoutes.contacts,
+              name: AppRoutesName.contacts,
+              path: AppRoutesPath.contacts,
               builder: (context, state) => const ContactsListPage(),
             ),
           ],
@@ -72,7 +80,8 @@ final GoRouter router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: AppRoutes.chats,
+              name: AppRoutesName.chats,
+              path: AppRoutesPath.chats,
               builder: (context, state) => const ChatsListPage(),
             ),
           ],
@@ -82,7 +91,8 @@ final GoRouter router = GoRouter(
         StatefulShellBranch(
           routes: [
             GoRoute(
-              path: AppRoutes.more,
+              name: AppRoutesName.more,
+              path: AppRoutesPath.more,
               builder: (context, state) => const MoreListPage(),
             ),
           ],
@@ -92,7 +102,8 @@ final GoRouter router = GoRouter(
 
     ///More → Settings (top-level routes, accessible via push from MoreListPage)
     GoRoute(
-      path: AppRoutes.profile,
+      name: AppRoutesName.profile,
+      path: AppRoutesPath.profile,
       builder: (context, state) {
         final extra = state.extra as Map<String, dynamic>?;
         final isNewUser = extra?['isNewUser'] as bool? ?? false;
@@ -100,38 +111,50 @@ final GoRouter router = GoRouter(
       },
     ),
     GoRoute(
-      path: AppRoutes.account,
+      name: AppRoutesName.account,
+      path: AppRoutesPath.account,
       builder: (context, state) => const AccountPage(),
     ),
     GoRoute(
-      path: AppRoutes.settingChats,
+      name: AppRoutesName.settingChats,
+      path: AppRoutesPath.settingChats,
       builder: (context, state) => const SettingChatsPage(),
     ),
     GoRoute(
-      path: AppRoutes.appearance,
+      name: AppRoutesName.appearance,
+      path: AppRoutesPath.appearance,
       builder: (context, state) => const AppearancePage(),
     ),
     GoRoute(
-      path: AppRoutes.notification,
+      name: AppRoutesName.notification,
+      path: AppRoutesPath.notification,
       builder: (context, state) => const NotificationPage(),
     ),
     GoRoute(
-      path: AppRoutes.privacy,
+      name: AppRoutesName.privacy,
+      path: AppRoutesPath.privacy,
       builder: (context, state) => const PrivacyPage(),
     ),
     GoRoute(
-      path: AppRoutes.dataUsage,
+      name: AppRoutesName.dataUsage,
+      path: AppRoutesPath.dataUsage,
       builder: (context, state) => const DataUsagePage(),
     ),
-    GoRoute(path: AppRoutes.help, builder: (context, state) => const HelpPage()),
     GoRoute(
-      path: AppRoutes.inviteYourFriends,
+      name: AppRoutesName.help,
+      path: AppRoutesPath.help,
+      builder: (context, state) => const HelpPage(),
+    ),
+    GoRoute(
+      name: AppRoutesName.inviteYourFriends,
+      path: AppRoutesPath.inviteYourFriends,
       builder: (context, state) => const InviteYourFriendsPage(),
     ),
 
     /// Dialog — chat conversation page
     GoRoute(
-      path: AppRoutes.dialog,
+      name: AppRoutesName.dialog,
+      path: AppRoutesPath.dialog,
       builder: (context, state) {
         final extra = state.extra as Map<String, dynamic>? ?? {};
         final chatId = extra['chatId'] as String? ?? '';
@@ -142,8 +165,8 @@ final GoRouter router = GoRouter(
             ? extra['currentUserId'] as String
             : (sl<AuthStorage>().getUserId() ?? '');
         return BlocProvider(
-          create: (_) => sl<DialogBloc>()
-            ..add(LoadMessagesRequested(chatId: chatId)),
+          create: (_) =>
+              sl<DialogBloc>()..add(LoadMessagesRequested(chatId: chatId)),
           child: DialogPage(
             chatId: chatId,
             chatName: chatName,

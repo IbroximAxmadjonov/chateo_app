@@ -1,4 +1,4 @@
-class AppRoutes {
+class AppRoutesPath {
   /// Splash
   static const String splash = '/splash';
   /// Auth

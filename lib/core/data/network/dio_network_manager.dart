@@ -13,14 +13,14 @@ import 'network_request.dart';
 
 class DioNetworkManager {
   final Dio _dio;
-  final Auth2Interceptor _auth2interceptor;
+  final AuthInterceptor _auth2interceptor;
 
   final String mainBaseUrl = 'https://messenger-backend-z16z.onrender.com';
   final Map<String, dynamic> _headers = {
     HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
   };
 
-  DioNetworkManager({required Dio dio, required Auth2Interceptor auth2interceptor})
+  DioNetworkManager({required Dio dio, required AuthInterceptor auth2interceptor})
     : _dio = dio,
       _auth2interceptor = auth2interceptor {
     _addBaseUrl();

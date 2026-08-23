@@ -1,4 +1,4 @@
-import 'package:chateo_app/core/domain/routing/routes.dart';
+import 'package:chateo_app/core/domain/routing/app_routes_path.dart';
 import 'package:chateo_app/core/utils/theme_extension.dart';
 import 'package:chateo_app/generated/assets.dart';
 import 'package:chateo_app/generated/locale_keys.g.dart';
@@ -56,7 +56,7 @@ class WalkThrough extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 child: ElevatedButton(
-                  onPressed: () => context.push(AppRoutes.sentOtp),
+                  onPressed: () => context.push(AppRoutesPath.sentOtp),
                   child: Text(LocaleKeys.onBoarding_startMessaging.tr()),
                 ),
               ),

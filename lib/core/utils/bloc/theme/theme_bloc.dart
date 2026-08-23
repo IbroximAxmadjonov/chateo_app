@@ -3,22 +3,21 @@ import 'package:flutter/material.dart';
 import 'package:hydrated_bloc/hydrated_bloc.dart';
 
 part 'theme_event.dart';
-part 'theme_state.dart';
 
-class ThemeBloc extends HydratedBloc<ThemeEvent, ThemeState> {
-  ThemeBloc() : super(const ThemeState()) {
+class ThemeBloc extends HydratedBloc<ThemeEvent, ThemeMode> {
+  ThemeBloc() : super(ThemeMode.system) {
     on<ThemeModeChanged>((event, emit) {
-      emit(state.copyWith(themeMode: event.themeMode, isExplicit: true));
+      emit(event.themeMode);
     });
   }
 
   @override
-  ThemeState? fromJson(Map<String, dynamic> json) {
-    return ThemeState.fromMap(json);
+  ThemeMode fromJson(Map<String, dynamic> json) {
+    return ThemeMode.values[json['themeMode'] as int];
   }
 
   @override
-  Map<String, dynamic>? toJson(ThemeState state) {
-    return state.toMap();
+  Map<String, dynamic>? toJson(ThemeMode state) {
+    return {'themeMode': state.index};
   }
 }

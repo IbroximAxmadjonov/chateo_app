@@ -15,7 +15,9 @@ class NavigationPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // ValueKey on locale forces IndexedStack branch pages to rebuild when locale changes.
     return Scaffold(
+      key: ValueKey(context.locale),
       body: navigationShell,
       bottomNavigationBar: Container(
         height: 83.h + MediaQuery.of(context).padding.bottom,

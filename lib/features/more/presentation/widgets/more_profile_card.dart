@@ -3,6 +3,7 @@ import 'package:chateo_app/core/presentation/widgets/app_icon.dart';
 import 'package:chateo_app/core/utils/theme_extension.dart';
 import 'package:chateo_app/core/utils/themes/app_colors.dart';
 import 'package:chateo_app/generated/assets.dart';
+import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -55,7 +56,12 @@ class _MoreProfileCardState extends State<MoreProfileCard> {
         final String name = profile != null
             ? '${profile.firstName} ${profile.lastName}'.trim()
             : '';
-        final String displayName = name.isNotEmpty ? name : 'Пользователь';
+        final String fallbackName = context.locale.languageCode == 'en'
+            ? 'User'
+            : context.locale.languageCode == 'uz'
+                ? 'Foydalanuvchi'
+                : 'Пользователь';
+        final String displayName = name.isNotEmpty ? name : fallbackName;
         final String phone = profile?.phoneNumber ?? '';
 
         return GestureDetector(

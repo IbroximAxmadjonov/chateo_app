@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import 'core/domain/routing/router.dart';
+import 'core/domain/routing/app_router.dart';
 import 'core/utils/bloc/theme/theme_bloc.dart';
 import 'core/utils/providers.dart';
 import 'core/utils/themes/app_themes.dart';
@@ -16,8 +16,8 @@ class Application extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: providers,
-      child: BlocBuilder<ThemeBloc, ThemeState>(
-        builder: (context, state) {
+      child: BlocBuilder<ThemeBloc, ThemeMode>(
+        builder: (context, themeMode) {
           return ScreenUtilInit(
             designSize: const Size(375, 812),
             minTextAdapt: true,
@@ -27,7 +27,7 @@ class Application extends StatelessWidget {
                 /// Ui
                 theme: AppTheme.lightTheme,
                 darkTheme: AppTheme.darkTheme,
-                // themeMode: state.themeMode,
+                themeMode: themeMode,
 
                 /// Navigation
                 routerConfig: router,

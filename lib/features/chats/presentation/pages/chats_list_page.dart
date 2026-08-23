@@ -1,4 +1,4 @@
-import 'package:chateo_app/core/domain/routing/routes.dart';
+import 'package:chateo_app/core/domain/routing/app_routes_path.dart';
 import 'package:chateo_app/core/presentation/widgets/app_icon.dart';
 import 'package:chateo_app/core/presentation/widgets/app_search_bar.dart';
 import 'package:chateo_app/core/utils/theme_extension.dart';
@@ -81,6 +81,8 @@ class _ChatsListPageState extends State<ChatsListPage> {
 
   @override
   Widget build(BuildContext context) {
+    // Registers this widget as a dependent of EasyLocalization so it rebuilds on locale change.
+    EasyLocalization.of(context);
     return BlocListener<ChatsBloc, ChatsState>(
       listener: (context, state) {
         if (state is ChatsError) {
@@ -164,7 +166,7 @@ class _ChatsListPageState extends State<ChatsListPage> {
                           final c = chats[index];
                           return InkWell(
                             onTap: () => context.push(
-                              AppRoutes.dialog,
+                              AppRoutesPath.dialog,
                               extra: {
                                 'chatId': c.chatId,
                                 'chatName': c.chatName,

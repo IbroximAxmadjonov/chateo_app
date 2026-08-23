@@ -1,4 +1,4 @@
-import 'package:chateo_app/core/domain/routing/routes.dart';
+import 'package:chateo_app/core/domain/routing/app_routes_path.dart';
 import 'package:chateo_app/generated/assets.dart';
 import 'package:chateo_app/generated/locale_keys.g.dart';
 
@@ -17,13 +17,15 @@ class MoreListPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Registers this widget as a dependent of EasyLocalization so it rebuilds on locale change.
+    EasyLocalization.of(context);
     return Scaffold(
       appBar: AppBar(title: Text(LocaleKeys.more_title.tr())),
       body: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            MoreProfileCard(onTap: () => context.push(AppRoutes.profile)),
+            MoreProfileCard(onTap: () => context.push(AppRoutesPath.profile)),
 
             SizedBox(height: 16.h),
 
@@ -37,12 +39,12 @@ class MoreListPage extends StatelessWidget {
                       MoreSettingsGroupItem(
                         asset: Assets.icons.user,
                         title: LocaleKeys.more_account.tr(),
-                        onPressed: () => context.push(AppRoutes.account),
+                        onPressed: () => context.push(AppRoutesPath.account),
                       ),
                       MoreSettingsGroupItem(
                         asset: Assets.icons.messageCircle,
                         title: LocaleKeys.more_settingChats.tr(),
-                        onPressed: () => context.push(AppRoutes.settingChats),
+                        onPressed: () => context.push(AppRoutesPath.settingChats),
                       ),
                     ],
                   ),
@@ -52,22 +54,22 @@ class MoreListPage extends StatelessWidget {
                       MoreSettingsGroupItem(
                         asset: Assets.icons.sun,
                         title: LocaleKeys.more_appearance.tr(),
-                        onPressed: () => context.push(AppRoutes.appearance),
+                        onPressed: () => context.push(AppRoutesPath.appearance),
                       ),
                       MoreSettingsGroupItem(
                         asset: Assets.icons.notification,
                         title: LocaleKeys.more_notification.tr(),
-                        onPressed: () => context.push(AppRoutes.notification),
+                        onPressed: () => context.push(AppRoutesPath.notification),
                       ),
                       MoreSettingsGroupItem(
                         asset: Assets.icons.outlinePrivacyTip,
                         title: LocaleKeys.more_privacy.tr(),
-                        onPressed: () => context.push(AppRoutes.privacy),
+                        onPressed: () => context.push(AppRoutesPath.privacy),
                       ),
                       MoreSettingsGroupItem(
                         asset: Assets.icons.folder,
                         title: LocaleKeys.more_dataUsage.tr(),
-                        onPressed: () => context.push(AppRoutes.dataUsage),
+                        onPressed: () => context.push(AppRoutesPath.dataUsage),
                       ),
                     ],
                   ),
@@ -77,12 +79,12 @@ class MoreListPage extends StatelessWidget {
                       MoreSettingsGroupItem(
                         asset: Assets.icons.helpCircle,
                         title: LocaleKeys.more_help.tr(),
-                        onPressed: () => context.push(AppRoutes.help),
+                        onPressed: () => context.push(AppRoutesPath.help),
                       ),
                       MoreSettingsGroupItem(
                         asset: Assets.icons.mail,
                         title: LocaleKeys.more_inviteYourFriends.tr(),
-                        onPressed: () => context.push(AppRoutes.inviteYourFriends),
+                        onPressed: () => context.push(AppRoutesPath.inviteYourFriends),
                       ),
                     ],
                   ),

@@ -1,8 +1,7 @@
-import 'package:chateo_app/core/domain/routing/routes.dart';
 import 'package:chateo_app/core/data/storage/auth_storage.dart';
+import 'package:chateo_app/core/domain/routing/app_routes_name.dart';
 import 'package:chateo_app/generated/assets.dart';
 import 'package:chateo_app/service_locator.dart';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
@@ -39,9 +38,9 @@ class _SplashPageState extends State<SplashPage>
       if (mounted) {
         final authStorage = sl<AuthStorage>();
         if (authStorage.hasToken()) {
-          context.go(AppRoutes.chats);
+          context.goNamed(AppRoutesName.chats);
         } else {
-          context.go(AppRoutes.walkThrough);
+          context.goNamed(AppRoutesName.walkThrough);
         }
       }
     });

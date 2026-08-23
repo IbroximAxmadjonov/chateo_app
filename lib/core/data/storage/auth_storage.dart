@@ -48,7 +48,7 @@ class AuthStorage {
     try {
       final jwt = JWT.decode(token);
       return jwt.payload['sub'] as String? ??
-          jwt.payload['nameid'] as String? ??
+          jwt.payload['nameId'] as String? ??
           jwt.payload['userId'] as String?;
     } catch (_) {
       return null;

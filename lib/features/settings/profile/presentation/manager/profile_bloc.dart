@@ -78,7 +78,7 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           emit(ProfileError(message: l.message));
         }
       },
-      (r) async {
+      (r) {
         final profile = ProfileEntity(
           userId: r.userId,
           phoneNumber: r.phoneNumber,
@@ -87,8 +87,12 @@ class ProfileBloc extends Bloc<ProfileEvent, ProfileState> {
           avatarUrl: r.avatarUrl,
         );
         // 3. Persist fresh data to cache for next launch
-        await cacheService.saveCache(profile);
-        emit(ProfileLoaded(profileEntity: profile));
+        // ⚠️ тут нельзя async, поэтому делай так:
+        cacheService.saveCache(profile).then((_) {
+          if (!emit.isDone) {
+            emit(ProfileLoaded(profileEntity: profile));
+          }
+        });
       },
     );
   }
