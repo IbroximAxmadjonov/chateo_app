@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:chateo_app/core/data/data_sources/remote_data_source.dart';
 import 'package:chateo_app/core/data/network/dio_network_manager.dart';
 import 'package:chateo_app/core/data/network/network_request.dart';
+import 'package:chateo_app/core/utils/api_constant.dart';
 import 'package:chateo_app/core/utils/errors/exception.dart';
+import 'package:chateo_app/features/chats/data/models/chats_model.dart';
 import 'package:flutter/foundation.dart';
-
-import '../models/chats_model.dart';
 
 abstract class ChatsRemoteDataSource {
   Future<List<ChatsModel>> getAllChats();
@@ -30,7 +30,7 @@ class ChatsRemoteDataSourceImpl extends RemoteDataSource
   Future<List<ChatsModel>> getAllChats() async {
     final response = await performRequest<List>(() async {
       final response = await dioNetworkManager.get(
-        NetworkRequest(path: '/api/chats'),
+        NetworkRequest(path: ApiConstant.chatsUrl),
       );
       return response.data;
     });
@@ -48,7 +48,7 @@ class ChatsRemoteDataSourceImpl extends RemoteDataSource
     await performRequest<void>(() async {
       final response = await dioNetworkManager.post(
         NetworkRequest(
-          path: '/api/chats/private',
+          path: ApiConstant.chatsPrivateUrl,
           data: {'otherUserId': otherUserId},
         ),
       );
@@ -60,7 +60,10 @@ class ChatsRemoteDataSourceImpl extends RemoteDataSource
   Future<List<ChatsModel>> searchChats(String query) async {
     final response = await performRequest<List>(() async {
       final response = await dioNetworkManager.get(
-        NetworkRequest(path: '/api/Search/users', queryParams: {'query': query}),
+        NetworkRequest(
+          path: ApiConstant.chatsSearchUrl,
+          queryParams: {'query': query},
+        ),
       );
       return response.data;
     });
@@ -88,7 +91,7 @@ class ChatsRemoteDataSourceImpl extends RemoteDataSource
     Future<void> fetchAndEmit() async {
       try {
         final response = await dioNetworkManager.get(
-          NetworkRequest(path: '/api/chats'),
+          NetworkRequest(path: ApiConstant.chatsUrl),
         );
         if (controller.isClosed) return;
 

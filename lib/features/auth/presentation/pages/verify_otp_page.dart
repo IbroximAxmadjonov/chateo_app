@@ -8,10 +8,10 @@ import 'package:chateo_app/generated/locale_keys.g.dart';
 
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:go_router/go_router.dart';
+import 'package:pin_code_fields/pin_code_fields.dart';
 
 import '../manager/auth_bloc.dart';
 
@@ -33,26 +33,29 @@ class VerifyOtpPage extends StatefulWidget {
 class _VerifyOtpPageState extends State<VerifyOtpPage> {
   static const int _otpLength = 4;
 
-  final _codeController = TextEditingController();
-  final _codeFocusNode = FocusNode();
+  late final PinInputController _pinController;
 
-  String get _code => _codeController.text;
+  @override
+  void initState() {
+    super.initState();
+    _pinController = PinInputController();
+  }
 
   @override
   void dispose() {
-    _codeController.dispose();
-    _codeFocusNode.dispose();
+    _pinController.dispose();
     super.dispose();
   }
 
-  void _submitCode() {
+  void _submitCode([String? code]) {
+    final verificationCode = code ?? _pinController.text;
     context.read<AuthBloc>().add(
-      AuthVerifyOtpRequested(phone: widget.phoneNumber, code: _code),
+      AuthVerifyOtpRequested(phone: widget.phoneNumber, code: verificationCode),
     );
   }
 
   void _resendCode() {
-    _codeController.clear();
+    _pinController.clear();
     context.read<AuthBloc>().add(
       AuthSendOtpRequested(phoneNumber: widget.phoneNumber),
     );
@@ -62,12 +65,14 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
   Widget build(BuildContext context) {
     final textStyle = context.appTextStyle;
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final primaryColor = context.appColors.primary;
 
     return BlocConsumer<AuthBloc, AuthState>(
       listener: (context, state) {
         if (state.lastAction == AuthAction.verifyOtp) {
           if (state.status == FormStatus.failure) {
-            _codeController.clear();
+            _pinController.clear();
+            _pinController.triggerError();
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(
                 content: Text(
@@ -97,6 +102,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
       },
       builder: (context, state) {
         final isLoading = state.status == FormStatus.loading;
+        final inactiveColor = isDark ? NeutralColor.weak : NeutralColor.active;
 
         return Scaffold(
           appBar: AppBar(
@@ -140,54 +146,46 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                         ),
                         SizedBox(height: 48.h),
 
-                        // ── OTP dots: тап открывает системную клавиатуру ─────────────
-                        GestureDetector(
-                          onTap: () => _codeFocusNode.requestFocus(),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: List.generate(_otpLength, (i) {
-                              return _OtpCell(
-                                index: i,
-                                code: _code,
-                                isDark: isDark,
-                                textStyle: textStyle,
-                              );
-                            }),
-                          ),
+                        // ── OTP input (pin_code_fields) ───────────────────
+                        PinInput(
+                          length: _otpLength,
+                          pinController: _pinController,
+                          autoFocus: true,
+                          keyboardType: TextInputType.number,
+                          onCompleted: (pin) => _submitCode(pin),
+                          builder: (context, cells) {
+                            return Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: cells.map((cell) {
+                                return Padding(
+                                  padding: EdgeInsets.symmetric(horizontal: 12.w),
+                                  child: SizedBox(
+                                    width: 40.w,
+                                    height: 52.h,
+                                    child: Center(
+                                      child: cell.isFilled && cell.character != null
+                                          ? Text(
+                                              cell.character!,
+                                              style: textStyle.displaySmall?.copyWith(
+                                                fontWeight: FontWeight.w700,
+                                              ),
+                                            )
+                                          : Container(
+                                              width: 16.w,
+                                              height: 16.h,
+                                              decoration: BoxDecoration(
+                                                shape: BoxShape.circle,
+                                                color: inactiveColor,
+                                              ),
+                                            ),
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                            );
+                          },
                         ),
 
-                        // Скрытый TextField — принимает ввод с системной клавиатуры (полностью невидимый)
-                        Opacity(
-                          opacity: 0.0,
-                          child: SizedBox(
-                            width: 1,
-                            height: 1,
-                            child: TextField(
-                              controller: _codeController,
-                              focusNode: _codeFocusNode,
-                              autofocus: true,
-                              showCursor: false,
-                              style: const TextStyle(color: Colors.transparent),
-                              keyboardType: TextInputType.number,
-                              maxLength: _otpLength,
-                              inputFormatters: [
-                                FilteringTextInputFormatter.digitsOnly,
-                              ],
-                              onChanged: (value) {
-                                setState(() {});
-                                if (value.length == _otpLength) {
-                                  _submitCode();
-                                }
-                              },
-                              decoration: const InputDecoration(
-                                counterText: '',
-                                border: InputBorder.none,
-                                enabledBorder: InputBorder.none,
-                                focusedBorder: InputBorder.none,
-                              ),
-                            ),
-                          ),
-                        ),
                         SizedBox(height: 40.h),
 
                         // ── Loading indicator ─────────────────────────────
@@ -197,7 +195,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                             width: 24.w,
                             child: CircularProgressIndicator(
                               strokeWidth: 2,
-                              color: context.appColors.primary,
+                              color: primaryColor,
                             ),
                           ),
 
@@ -209,7 +207,7 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
                           child: Text(
                             LocaleKeys.auth_verify_otp_resend_code.tr(),
                             style: textStyle.titleMedium?.copyWith(
-                              color: context.appColors.primary,
+                              color: primaryColor,
                               fontWeight: FontWeight.w600,
                             ),
                           ),
@@ -223,54 +221,6 @@ class _VerifyOtpPageState extends State<VerifyOtpPage> {
           ),
         );
       },
-    );
-  }
-}
-
-/// Одна ячейка OTP — либо показывает цифру, либо пустой кружок
-class _OtpCell extends StatelessWidget {
-  const _OtpCell({
-    required this.index,
-    required this.code,
-    required this.isDark,
-    required this.textStyle,
-  });
-
-  final int index;
-  final String code;
-  final bool isDark;
-  final TextTheme textStyle;
-
-  @override
-  Widget build(BuildContext context) {
-    final isFilled = index < code.length;
-    final digit = isFilled ? code[index] : null;
-
-    return Padding(
-      padding: EdgeInsets.symmetric(horizontal: 12.w),
-      child: SizedBox(
-        width: 40.w,
-        height: 52.h,
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            if (digit != null)
-              Text(
-                digit,
-                style: textStyle.displaySmall?.copyWith(fontWeight: FontWeight.w700),
-              )
-            else
-              Container(
-                width: 16.w,
-                height: 16.h,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: isDark ? NeutralColor.weak : NeutralColor.active,
-                ),
-              ),
-          ],
-        ),
-      ),
     );
   }
 }

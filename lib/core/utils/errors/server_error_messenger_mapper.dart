@@ -1,5 +1,5 @@
-class ServerErrorMessageMapper {
-  const ServerErrorMessageMapper._();
+class ServerErrorMessengerMapper {
+  const ServerErrorMessengerMapper._();
 
   static String getMessage({
     required int? statusCode,

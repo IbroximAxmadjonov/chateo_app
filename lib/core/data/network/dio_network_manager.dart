@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:chateo_app/core/utils/api_constant.dart';
 import 'package:chateo_app/core/utils/errors/dio_exception_handler.dart';
 import 'package:chateo_app/core/utils/errors/exception.dart';
 
@@ -14,8 +15,6 @@ import 'network_request.dart';
 class DioNetworkManager {
   final Dio _dio;
   final AuthInterceptor _auth2interceptor;
-
-  final String mainBaseUrl = 'https://messenger-backend-z16z.onrender.com';
   final Map<String, dynamic> _headers = {
     HttpHeaders.contentTypeHeader: 'application/json; charset=UTF-8',
   };
@@ -53,7 +52,7 @@ class DioNetworkManager {
 
   void _addBaseUrl() {
     _dio.options = BaseOptions(
-      baseUrl: mainBaseUrl,
+      baseUrl: ApiConstant.mainBaseUrl,
       connectTimeout: const Duration(seconds: 30),
       receiveTimeout: const Duration(seconds: 30),
       responseType: ResponseType.json,

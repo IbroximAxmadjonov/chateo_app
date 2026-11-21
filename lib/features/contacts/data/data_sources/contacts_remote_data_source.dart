@@ -3,10 +3,10 @@ import 'dart:async';
 import 'package:chateo_app/core/data/data_sources/remote_data_source.dart';
 import 'package:chateo_app/core/data/network/dio_network_manager.dart';
 import 'package:chateo_app/core/data/network/network_request.dart';
+import 'package:chateo_app/core/utils/api_constant.dart';
 import 'package:chateo_app/core/utils/errors/exception.dart';
+import 'package:chateo_app/features/contacts/data/models/contact_model.dart';
 import 'package:flutter/foundation.dart';
-
-import '../models/contact_model.dart';
 
 /// Abstract interface for the local test/mock data source.
 abstract class ContactsRemoteDataSource {
@@ -35,7 +35,7 @@ class ContactsRemoteDataSourceImpl extends RemoteDataSource
   Future<List<ContactsModel>> getAllContacts() async {
     final response = await performRequest<List>(() async {
       final response = await dioNetworkManager.get(
-        NetworkRequest(path: '/api/contacts'),
+        NetworkRequest(path: ApiConstant.contactsUrl),
       );
       return response.data;
     });
@@ -52,7 +52,10 @@ class ContactsRemoteDataSourceImpl extends RemoteDataSource
   Future<List<ContactsModel>> searchContacts(String query) async {
     final response = await performRequest<List>(() async {
       final response = await dioNetworkManager.get(
-        NetworkRequest(path: '/api/Search/users', queryParams: {'query': query}),
+        NetworkRequest(
+          path: ApiConstant.contactsSearchUrl,
+          queryParams: {'query': query},
+        ),
       );
       return response.data;
     });
@@ -73,7 +76,7 @@ class ContactsRemoteDataSourceImpl extends RemoteDataSource
     await performRequest(() async {
       await dioNetworkManager.post(
         NetworkRequest(
-          path: '/api/contacts',
+          path: ApiConstant.contactsUrl,
           data: {
             "phoneNumber": phoneNumber,
             "firstName": firstName,
@@ -100,7 +103,7 @@ class ContactsRemoteDataSourceImpl extends RemoteDataSource
     Future<void> fetchAndEmit() async {
       try {
         final response = await dioNetworkManager.get(
-          NetworkRequest(path: '/api/contacts'),
+          NetworkRequest(path: ApiConstant.contactsUrl),
         );
         if (controller.isClosed) return;
 

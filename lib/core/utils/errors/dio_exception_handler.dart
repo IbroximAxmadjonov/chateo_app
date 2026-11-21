@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 
 import 'exception.dart';
-import 'server_error_messenge_mapper.dart';
+import 'server_error_messenger_mapper.dart';
 
 AppException dioExceptionHandler(DioException exception) {
   switch (exception.type) {
@@ -36,7 +36,7 @@ AppException _mapBadResponse(DioException exception) {
 
   final code = data?['code'] as String?;
 
-  final message = ServerErrorMessageMapper.getMessage(
+  final message = ServerErrorMessengerMapper.getMessage(
     statusCode: statusCode,
     data: data,
     code: code,

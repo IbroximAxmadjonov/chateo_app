@@ -1,9 +1,9 @@
 import 'package:chateo_app/core/data/data_sources/remote_data_source.dart';
 import 'package:chateo_app/core/data/network/dio_network_manager.dart';
 import 'package:chateo_app/core/data/network/network_request.dart';
+import 'package:chateo_app/core/utils/api_constant.dart';
 import 'package:chateo_app/core/utils/errors/exception.dart';
-
-import '../models/dialog_model.dart';
+import 'package:chateo_app/features/dialog/data/models/dialog_model.dart';
 
 abstract class DialogRemoteDataSource {
   /// GET /api/chats/{chatId}/messages?before=&limit=
@@ -59,7 +59,7 @@ class DialogRemoteDataSourceImpl extends RemoteDataSource
 
     final response = await dioNetworkManager.get(
       NetworkRequest(
-        path: '/api/chats/$chatId/messages',
+        path: '${ApiConstant.chatsUrl}/$chatId/messages',
         queryParams: queryParams,
       ),
     );
@@ -93,7 +93,7 @@ class DialogRemoteDataSourceImpl extends RemoteDataSource
 
     final response = await dioNetworkManager.post(
       NetworkRequest(
-        path: '/api/chats/$chatId/messages',
+        path: '${ApiConstant.chatsUrl}/$chatId/messages',
         data: body,
       ),
     );
@@ -112,7 +112,7 @@ class DialogRemoteDataSourceImpl extends RemoteDataSource
   }) async {
     await dioNetworkManager.put(
       NetworkRequest(
-        path: '/api/chats/$chatId/messages/read',
+        path: '${ApiConstant.chatsUrl}/$chatId/messages/read',
         data: {'upToMessageId': upToMessageId},
       ),
     );
@@ -125,7 +125,7 @@ class DialogRemoteDataSourceImpl extends RemoteDataSource
   }) async {
     final response = await dioNetworkManager.get(
       NetworkRequest(
-        path: '/api/chats/$chatId/messages/search',
+        path: '${ApiConstant.chatsUrl}/$chatId/messages/search',
         queryParams: {'query': query},
       ),
     );

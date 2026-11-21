@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:chateo_app/core/domain/routing/app_router.dart';
 import 'package:chateo_app/core/domain/routing/app_routes_path.dart';
+import 'package:chateo_app/core/utils/api_constant.dart';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/foundation.dart';
@@ -110,9 +111,9 @@ class AuthInterceptor implements Interceptor {
   }
 
   bool _isPublicAuthEndpoint(String path) {
-    return path.contains('/auth/send-otp') ||
-        path.contains('/auth/verify-otp') ||
-        path.contains('/auth/refresh');
+    return path.contains(ApiConstant.sendOtpUrl) ||
+        path.contains(ApiConstant.verifyOtpUrl) ||
+        path.contains(ApiConstant.refreshUrl);
   }
 
   bool _isExpired(String? token) {
@@ -129,77 +130,148 @@ class AuthInterceptor implements Interceptor {
     }
   }
 
-  Future<bool> _tryRefresh({int retryCount = 0}) async {
+  // Future<bool> _tryRefresh({int retryCount = 0}) async {
+  //   if (_refreshCompleter != null) {
+  //     debugPrint('🔄 Refresh already in progress, waiting...');
+  //     return _refreshCompleter!.future;
+  //   }
+  //   _refreshCompleter = Completer<bool>();
+  //
+  //   try {
+  //     final refreshToken = _authStorage.getRefreshToken;
+  //
+  //     if (!_authStorage.hasToken()) {
+  //       debugPrint('🔑 No refresh token stored — forcing login');
+  //       _refreshCompleter?.complete(false);
+  //       return false;
+  //     }
+  //     debugPrint('🔄 Attempting token refresh...');
+  //
+  //     final response = await _dio.post(
+  //       '/api/auth/refresh',
+  //       data: {'refreshToken': refreshToken},
+  //     );
+  //     debugPrint('🔄 Refresh response status: ${response.statusCode}');
+  //
+  //     if (response.statusCode == 200 || response.statusCode == 201) {
+  //       final responseData = response.data as Map<String, dynamic>;
+  //       final data = responseData['data'] as Map<String, dynamic>? ?? responseData;
+  //       // Try reading nested tokens object first, then fallback to direct properties
+  //       final tokens = data['tokens'] as Map<String, dynamic>?;
+  //       final newAccessToken =
+  //           (tokens != null ? tokens['accessToken'] : data['accessToken'])
+  //               as String?;
+  //       final newRefreshToken =
+  //           (tokens != null ? tokens['refreshToken'] : data['refreshToken'])
+  //               as String?;
+  //
+  //       if (newAccessToken != null && newRefreshToken != null) {
+  //         await _authStorage.saveTokens(newAccessToken, newRefreshToken);
+  //         debugPrint('✅ Tokens refreshed successfully');
+  //         _refreshCompleter?.complete(true);
+  //         return true;
+  //       }
+  //
+  //       debugPrint('❌ Refresh response missing tokens: $data');
+  //       _refreshCompleter?.complete(false);
+  //       return false;
+  //     }
+  //
+  //     debugPrint('❌ Refresh failed with status: ${response.statusCode}');
+  //     _refreshCompleter?.complete(false);
+  //     return false;
+  //   } on DioException catch (e) {
+  //     if (e.response == null && retryCount < 2) {
+  //       debugPrint(
+  //         '⚠️ Refresh network error (attempt ${retryCount + 1}/3), retrying in 4s...',
+  //       );
+  //       _refreshCompleter?.complete(false);
+  //       await Future.delayed(const Duration(seconds: 4));
+  //       return _tryRefresh(retryCount: retryCount + 1);
+  //     }
+  //     debugPrint(
+  //       '❌ Refresh DioException: ${e.response?.statusCode} — ${e.response?.data}',
+  //     );
+  //     _refreshCompleter?.complete(false);
+  //     _refreshCompleter = null;
+  //     return false;
+  //   } catch (e) {
+  //     debugPrint('❌ Refresh unexpected error: $e');
+  //     _refreshCompleter?.complete(false);
+  //     return false;
+  //   }
+  //   finally {
+  //     _refreshCompleter = null;
+  //   }
+  // }
+  Future<bool> _tryRefresh() async {
+    // Если рефреш уже идёт — ждём его результата (не создаём новый).
     if (_refreshCompleter != null) {
+      debugPrint('🔄 Refresh already in progress, waiting...');
       return _refreshCompleter!.future;
     }
     _refreshCompleter = Completer<bool>();
-
     try {
-      final refreshToken = _authStorage.getRefreshToken;
-
-      if (!_authStorage.hasToken()) {
-        debugPrint('🔑 No refresh token stored — forcing login');
-        _refreshCompleter?.complete(false);
-        return false;
-      }
-      debugPrint('🔄 Attempting token refresh...');
-
+      // ✅ Retry-логика вынесена в отдельный метод — без Completer.
+      final result = await _doRefreshRequest(retryCount: 0);
+      _refreshCompleter!.complete(result);
+      return result;
+    } catch (e) {
+      debugPrint('❌ Refresh unexpected error: $e');
+      _refreshCompleter!.complete(false);
+      return false;
+    } finally {
+      // ✅ Completer сбрасывается ВСЕГДА и ТОЛЬКО здесь — в одном месте.
+      _refreshCompleter = null;
+    }
+  }
+  Future<bool> _doRefreshRequest({required int retryCount}) async {
+    if (!_authStorage.hasToken()) {
+      debugPrint('🔑 No refresh token stored — forcing login');
+      return false;
+    }
+    final refreshToken = _authStorage.getRefreshToken;
+    debugPrint('🔄 Attempting token refresh (attempt ${retryCount + 1}/3)...');
+    try {
       final response = await _dio.post(
-        '/api/auth/refresh',
+        ApiConstant.refreshUrl,
         data: {'refreshToken': refreshToken},
       );
       debugPrint('🔄 Refresh response status: ${response.statusCode}');
-
       if (response.statusCode == 200 || response.statusCode == 201) {
         final responseData = response.data as Map<String, dynamic>;
         final data = responseData['data'] as Map<String, dynamic>? ?? responseData;
-        // Try reading nested tokens object first, then fallback to direct properties
         final tokens = data['tokens'] as Map<String, dynamic>?;
         final newAccessToken =
-            (tokens != null ? tokens['accessToken'] : data['accessToken'])
-                as String?;
+        (tokens != null ? tokens['accessToken'] : data['accessToken'])
+        as String?;
         final newRefreshToken =
-            (tokens != null ? tokens['refreshToken'] : data['refreshToken'])
-                as String?;
-
+        (tokens != null ? tokens['refreshToken'] : data['refreshToken'])
+        as String?;
         if (newAccessToken != null && newRefreshToken != null) {
           await _authStorage.saveTokens(newAccessToken, newRefreshToken);
           debugPrint('✅ Tokens refreshed successfully');
-          _refreshCompleter?.complete(true);
           return true;
         }
-
         debugPrint('❌ Refresh response missing tokens: $data');
-        _refreshCompleter?.complete(false);
         return false;
       }
-
       debugPrint('❌ Refresh failed with status: ${response.statusCode}');
-      _refreshCompleter?.complete(false);
       return false;
     } on DioException catch (e) {
+      // Сетевая ошибка (нет ответа) + есть ещё попытки → повторяем.
       if (e.response == null && retryCount < 2) {
         debugPrint(
           '⚠️ Refresh network error (attempt ${retryCount + 1}/3), retrying in 4s...',
         );
-        _refreshCompleter?.complete(false);
         await Future.delayed(const Duration(seconds: 4));
-        return _tryRefresh(retryCount: retryCount + 1);
+        // ✅ Рекурсия ВНУТРИ этого метода — Completer не затрагивается.
+        return _doRefreshRequest(retryCount: retryCount + 1);
       }
       debugPrint(
         '❌ Refresh DioException: ${e.response?.statusCode} — ${e.response?.data}',
       );
-      _refreshCompleter?.complete(false);
-      _refreshCompleter = null;
       return false;
-    } catch (e) {
-      debugPrint('❌ Refresh unexpected error: $e');
-      _refreshCompleter?.complete(false);
-      return false;
-    }
-    finally {
-      _refreshCompleter = null;
     }
   }
 }

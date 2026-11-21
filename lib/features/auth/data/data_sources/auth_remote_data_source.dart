@@ -1,6 +1,7 @@
 import 'package:chateo_app/core/data/data_sources/remote_data_source.dart';
 import 'package:chateo_app/core/data/network/dio_network_manager.dart';
 import 'package:chateo_app/core/data/network/network_request.dart';
+import 'package:chateo_app/core/utils/api_constant.dart';
 
 abstract class AuthRemoteDataSource {
   Future<void> sendOtp({required String phoneNumber});
@@ -29,7 +30,7 @@ class AuthRemoteDataSourceImpl extends RemoteDataSource
     await performRequest<void>(() async {
       final response = await dioNetworkManager.post(
         NetworkRequest(
-          path: "/api/auth/send-otp",
+          path: ApiConstant.sendOtpUrl,
           data: {"phoneNumber": phoneNumber},
         ),
       );
@@ -45,7 +46,7 @@ class AuthRemoteDataSourceImpl extends RemoteDataSource
     return await performRequest<Map<String, dynamic>>(() async {
       final response = await dioNetworkManager.post(
         NetworkRequest(
-          path: "/api/auth/verify-otp",
+          path: ApiConstant.verifyOtpUrl,
           data: {"phoneNumber": phone, "code": code},
         ),
       );
@@ -58,7 +59,7 @@ class AuthRemoteDataSourceImpl extends RemoteDataSource
     return await performRequest<Map<String, dynamic>>(() async {
       final response = await dioNetworkManager.post(
         NetworkRequest(
-          path: "/api/auth/refresh",
+          path: ApiConstant.refreshUrl,
           data: {"refreshToken": refreshToken},
         ),
       );

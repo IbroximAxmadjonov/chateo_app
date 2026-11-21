@@ -14,17 +14,13 @@ class $AssetsImagesGen {
   const $AssetsImagesGen();
 
   final AssetGenImage chateoLogoDark = const AssetGenImage(
-    'assets/images/chateo_logo_dark.png',
-  );
+      'assets/images/chateo_logo_dark.png');
   final AssetGenImage chateoLogoLight = const AssetGenImage(
-    'assets/images/chateo_logo_light.png',
-  );
+      'assets/images/chateo_logo_light.png');
   final SvgGenImage illustrationDark = const SvgGenImage(
-    'assets/images/illustration_dark.svg',
-  );
+      'assets/images/illustration_dark.svg');
   final SvgGenImage illustrationLight = const SvgGenImage(
-    'assets/images/illustration_light.svg',
-  );
+      'assets/images/illustration_light.svg');
 }
 
 class $AssetsIconsGen {
@@ -35,8 +31,7 @@ class $AssetsIconsGen {
   final SvgGenImage chevronDown = const SvgGenImage('assets/icons/chevron_down.svg');
   final SvgGenImage chevronLeft = const SvgGenImage('assets/icons/chevron_left.svg');
   final SvgGenImage chevronRight = const SvgGenImage(
-    'assets/icons/chevron_right.svg',
-  );
+      'assets/icons/chevron_right.svg');
   final SvgGenImage chevronUp = const SvgGenImage('assets/icons/chevron_up.svg');
   final SvgGenImage closeSmall = const SvgGenImage('assets/icons/close_small.svg');
   final SvgGenImage contacts = const SvgGenImage('assets/icons/contacts.svg');
@@ -46,37 +41,29 @@ class $AssetsIconsGen {
   final SvgGenImage helpCircle = const SvgGenImage('assets/icons/help_circle.svg');
   final SvgGenImage hide_ = const SvgGenImage('assets/icons/hide.svg');
   final SvgGenImage keyboardShiftUppercase = const SvgGenImage(
-    'assets/icons/keyboard_shift_uppercase.svg',
-  );
+      'assets/icons/keyboard_shift_uppercase.svg');
   final SvgGenImage listCheck = const SvgGenImage('assets/icons/list_check.svg');
   final SvgGenImage listPlus = const SvgGenImage('assets/icons/list_plus.svg');
   final SvgGenImage mail = const SvgGenImage('assets/icons/mail.svg');
   final SvgGenImage messageCircle = const SvgGenImage(
-    'assets/icons/message_circle.svg',
-  );
+      'assets/icons/message_circle.svg');
   final SvgGenImage messagePlusAlt = const SvgGenImage(
-    'assets/icons/message_plus_alt.svg',
-  );
+      'assets/icons/message_plus_alt.svg');
   final SvgGenImage more = const SvgGenImage('assets/icons/more.svg');
   final SvgGenImage notification = const SvgGenImage(
-    'assets/icons/notification.svg',
-  );
+      'assets/icons/notification.svg');
   final SvgGenImage outlineKeyboardVoice = const SvgGenImage(
-    'assets/icons/outline_keyboard_voice.svg',
-  );
+      'assets/icons/outline_keyboard_voice.svg');
   final SvgGenImage outlinePrivacyTip = const SvgGenImage(
-    'assets/icons/outline_privacy_tip.svg',
-  );
+      'assets/icons/outline_privacy_tip.svg');
   final SvgGenImage play = const SvgGenImage('assets/icons/play.svg');
   final SvgGenImage plus = const SvgGenImage('assets/icons/plus.svg');
   final SvgGenImage plusCircle = const SvgGenImage('assets/icons/plus_circle.svg');
   final SvgGenImage plusCircleOutline = const SvgGenImage(
-    'assets/icons/plus_circle_outline.svg',
-  );
+      'assets/icons/plus_circle_outline.svg');
   final SvgGenImage search = const SvgGenImage('assets/icons/search.svg');
   final SvgGenImage sendAltFilled = const SvgGenImage(
-    'assets/icons/send_alt_filled.svg',
-  );
+      'assets/icons/send_alt_filled.svg');
   final SvgGenImage show_ = const SvgGenImage('assets/icons/show.svg');
   final SvgGenImage sun = const SvgGenImage('assets/icons/sun.svg');
   final SvgGenImage user = const SvgGenImage('assets/icons/user.svg');
@@ -86,6 +73,7 @@ class AssetGenImage {
   const AssetGenImage(this._assetName, {this.size, this.flavors = const {}});
 
   final String _assetName;
+
 
   final Size? size;
   final Set<String> flavors;
@@ -143,15 +131,25 @@ class AssetGenImage {
     );
   }
 
-  ImageProvider provider({AssetBundle? bundle, String? package}) {
-    return AssetImage(_assetName, bundle: bundle, package: package);
+  ImageProvider provider({
+    AssetBundle? bundle,
+    String? package,
+  }) {
+    return AssetImage(
+      _assetName,
+      bundle: bundle,
+      package: package,
+    );
   }
 
   Widget custom({
     Key? key,
     required Widget Function(BuildContext context, String assetPath) builder,
   }) {
-    return Builder(key: key, builder: (context) => builder(context, _assetName));
+    return Builder(
+      key: key,
+      builder: (context) => builder(context, _assetName),
+    );
   }
 
   String get path => _assetName;
@@ -209,10 +207,14 @@ class SvgGenImage {
     Key? key,
     required Widget Function(BuildContext context, String assetPath) builder,
   }) {
-    return Builder(key: key, builder: (context) => builder(context, _assetName));
+    return Builder(
+      key: key,
+      builder: (context) => builder(context, _assetName),
+    );
   }
 
   String get path => _assetName;
 
   String get keyName => _assetName;
 }
+
